@@ -1,0 +1,61 @@
+/*
+   Project contractnew
+
+   Gradle build file for Jason Application
+   November 24, 2021 - 10:31:27
+*/
+
+defaultTasks 'run'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+version '1.0'
+group   'org.jason'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(15)
+    }
+}
+
+repositories {
+    mavenCentral()
+
+    //maven { url "http://jacamo.sourceforge.net/maven2" }
+    maven { url "https://raw.github.com/jacamo-lang/mvn-repo/master" }
+    maven { url "https://jade.tilab.com/maven/" }
+    
+    flatDir { dirs 'lib' }
+}
+
+dependencies {
+    compile group: 'org.jason',     name: 'jason' ,   version: '3.0'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/java'
+        }
+        resources {
+            srcDir 'src/resources'
+        }
+    }
+}
+
+task run (type: JavaExec, dependsOn: 'classes') {
+    description 'runs the application'
+    main = 'jason.infra.local.RunLocalMAS'
+    args 'contractnet.mas2j'
+	// options:
+	//     args = ['contractnet.mas2j', '--debug']
+	//     args = ['contractnet.mas2j', '--log-conf', 'l.p'] // to use file l.p to configure logging
+    classpath sourceSets.main.runtimeClasspath
+}
+
+clean {
+    delete 'bin'
+    delete 'build'
+}
+

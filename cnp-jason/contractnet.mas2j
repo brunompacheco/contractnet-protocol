@@ -1,0 +1,18 @@
+/*
+    cnp
+    ---------------------------
+
+    Jason Project File
+
+    This file defines the initial state of the MAS
+
+    Jason 3.0
+    November 24, 2021 - 10:31:27
+*/
+
+MAS contractnet {
+
+    infrastructure: Local
+
+    agents: contractor; participant #100; refuser #10;
+}
