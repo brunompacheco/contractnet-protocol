@@ -52,7 +52,7 @@ class BehaviourParticipant(FipaContractNetProtocol):
             self.available = False
             call_later(self.agent.task_length, self.inform_done, message)
         else:
-            call_later(0.1, self.do_task, message)
+            call_later(0, self.do_task, message)
 
     def inform_done(self, message):
         self.display(f"Finished contract '{message.content}'")
@@ -74,7 +74,7 @@ class AgentParticipant(Agent):
             self.price = price
         
         if task_length is None:
-            self.task_length = 0.5 + random() * 0.5
+            self.task_length = 0 #0.5 + random() * 0.5
         else:
             self.task_length = task_length
 
