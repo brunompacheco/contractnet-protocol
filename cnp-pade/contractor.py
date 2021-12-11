@@ -47,22 +47,25 @@ class BehaviourContractor(FipaContractNetProtocol):
             self.display(f'Agent {message.sender.name} finished the task')
 
 class AgentContractor(Agent):
-    def __init__(self, aid, participants: List[str], debug=False):
+    def __init__(self, aid, participants: List[str], i=1, debug=False):
         super().__init__(aid, debug=debug)
 
-        contract_id = 1
+        self.participants = participants
 
+        contract_id = self.aid.port * 10
+        for _ in range(i):
+            call_later(8.0, self.launch_contract, contract_id)
+            contract_id += 1
+
+    def launch_contract(self, contract_id: int):
         contract_message = ACLMessage(ACLMessage.CFP)
         contract_message.set_protocol(ACLMessage.FIPA_CONTRACT_NET_PROTOCOL)
         contract_message.set_content(contract_id)
-        for participant in participants:
+        for participant in self.participants:
             contract_message.add_receiver(AID(name=participant))
 
-        self.contract_behaviour = BehaviourContractor(self, message=contract_message)
-        self.behaviours.append(self.contract_behaviour)
+        contract_behaviour = BehaviourContractor(self, message=contract_message)
+        self.behaviours.append(contract_behaviour)
 
-        call_later(8.0, self.launch_contract)
-
-    def launch_contract(self):
         display_message(self.aid.name, 'CNP started')
-        self.contract_behaviour.on_start()
+        contract_behaviour.on_start()
