@@ -5,12 +5,13 @@ from pade.core.agent import Agent
 from pade.acl.aid import AID
 from pade.acl.messages import ACLMessage
 from pade.behaviours.protocols import FipaContractNetProtocol
+import time
 
 
 class BehaviourContractor(FipaContractNetProtocol):
     def __init__(self, agent, message: ACLMessage):
         super().__init__(agent, message=message, is_initiator=True)
-
+        self.start_time = time.time()
         self.id = message.content
 
     def display(self, msg: str):
@@ -44,7 +45,7 @@ class BehaviourContractor(FipaContractNetProtocol):
         super().handle_inform(message)
 
         if message.content == 'DONE':
-            self.display(f'Agent {message.sender.name} finished the task')
+            self.display(f'Agent {message.sender.name} finished the task in ' + str(time.time() - self.start_time))
 
 class AgentContractor(Agent):
     def __init__(self, aid, participants: List[str], i=1, debug=False):
@@ -54,7 +55,7 @@ class AgentContractor(Agent):
 
         contract_id = self.aid.port * 10
         for _ in range(i):
-            call_later(8.0, self.launch_contract, contract_id)
+            call_later(15.0, self.launch_contract, contract_id)
             contract_id += 1
 
     def launch_contract(self, contract_id: int):
