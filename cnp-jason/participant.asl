@@ -32,6 +32,5 @@ price(X) :- .random(R) & X = (10*R) + 100.
 +accept_proposal(ContractID)[source(Agent)]
     :   proposal(ContractID,Offer,Agent)
     <-  -proposal(ContractID,Offer,Agent);
-        .send(Agent,tell,finished(ContractID));
-        !register;
+		.send(Agent,tell,finished(ContractID));
         .
