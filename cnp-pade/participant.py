@@ -26,14 +26,12 @@ class BehaviourParticipant(FipaContractNetProtocol):
     def handle_reject_propose(self, message):
         super().handle_reject_propose(message)
 
-        self.display(f"Proposal rejected for contract '{message.content}'")
+        # self.display(f"Proposal rejected for contract '{message.content}'")
 
     def handle_accept_propose(self, message):
         super().handle_accept_propose(message)
 
-        self.display(f"Proposal accepted for contract '{message.content}'")
-
-        self.do_task(message)
+        # self.display(f"Proposal accepted for contract '{message.content}'")
 
         self.inform_done(message)
 

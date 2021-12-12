@@ -25,7 +25,7 @@ class BehaviourContractor(FipaContractNetProtocol):
         # selects proposal based on price
         best_proposal = proposes[min(range(len(prices)), key=prices.__getitem__)]
 
-        self.display(f"Best proposal (out of {len(proposes)}) from {best_proposal.sender.name} with price {best_proposal.content}")
+        # self.display(f"Best proposal (out of {len(proposes)}) from {best_proposal.sender.name} with price {best_proposal.content}")
 
         accept_msg = ACLMessage(ACLMessage.ACCEPT_PROPOSAL)
         accept_msg.set_protocol(ACLMessage.FIPA_CONTRACT_NET_PROTOCOL)
