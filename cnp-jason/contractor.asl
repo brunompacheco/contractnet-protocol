@@ -35,21 +35,21 @@ cnp_deadline(4000).
 
 @cnp_hire
 +!cnp(ContractID)
-    <-  +contract(ContractID,open);
-		// .print("Opened contract ",ContractID);
-        !call_participants(ContractID,Participants);
+    <-  !call_participants(ContractID,Participants);
         ?cnp_deadline(Deadline);
         .wait(received_all_proposals(ContractID,.length(Participants)),Deadline,_);
         !pick_winner(ContractID,Winner,LoserProposals);
 		.print("Losers = ",LoserProposals);
         !reject(ContractID,LoserProposals);
         !accept(ContractID,Winner);
-        .wait({+finished(ContractID)[source(Winner)]});
-        +contract(ContractID,closed);
+        .wait({+finished(ContractID)[source(Winner)]},1000);
 		!print_time(ContractID);
         -finished(ContractID)[source(Winner)];
         .
-
+-!cnp(ContractID)[error(wait_timeout),source(self)] : true
+	<-	.print("Contract ",ContractID," failed!");
+		.
+		
 +!call_participants(ContractID,Participants)
     <-  .df_search("participant",Participants);
 		.send(Participants,tell,cfp(ContractID))
